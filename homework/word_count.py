@@ -28,7 +28,7 @@ import string
 def load_input(input_directory):
     """Funcion load_input"""
     sequence = []
-    files = glob.glob(f"{input_directory}/*")
+    files = glob.glob(f'{input_directory}/*')
     with fileinput.input(files=files) as f:
         for line in f:
             sequence.append((fileinput.filename(), line))
@@ -43,13 +43,14 @@ def load_input(input_directory):
 def line_preprocessing(sequence):
     """Line Preprocessing"""
     sequence = [
-        (key, value.translate(str.maketrans("", "", string.punctuation)).lower().strip())
+        (key, value.translate(str.maketrans('', '', string.punctuation)).lower().strip().strip())
         for key, value in sequence
     ]
     return sequence
 
+
 #
-# Escriba una función llamada maper que recibe una lista de tuplas de la
+# Escriba una función llamada mapper que recibe una lista de tuplas de la
 # función anterior y retorna una lista de tuplas (clave, valor). En este caso,
 # la clave es cada palabra y el valor es 1, puesto que se está realizando un
 # conteo.
@@ -62,14 +63,7 @@ def line_preprocessing(sequence):
 #
 def mapper(sequence):
     """Mapper"""
-    # result = []
-    # for _, value in sequence:
-    #     for word in value.split():
-    #         result.append( (word, 1) )  
-    # return result
     return [(word, 1) for _, value in sequence for word in value.split()]
-
-
 
 
 #
@@ -97,12 +91,11 @@ def shuffle_and_sort(sequence):
 def reducer(sequence):
     """Reducer"""
     result = {}
-    for key, ValueError in sequence:
-        if key not i result.keys():
+    for key, value in sequence:
+        if key not in result.keys():
             result[key] = 0
-        result[key] += value 
-    return list.(result.items())
-
+        result[key] += value
+    return list(result.items())
 
 
 #
@@ -125,12 +118,12 @@ def create_ouptput_directory(output_directory):
 # Adicionalmente, el archivo debe contener una tupla por línea, donde el primer
 # elemento es la clave y el segundo el valor. Los elementos de la tupla están
 # separados por un tabulador.
-
+#
 def save_output(output_directory, sequence):
     """Save Output"""
-    with open(f"{output_directory}/part-00000", "w", encoding="utf-8") as f:
+    with open(f'{output_directory}/part-00000', 'w', encoding='utf-8') as f:
         for key, value in sequence:
-            f.write(f"{key}\t{value}\n")
+            f.write(f'{key}\t{value}\n')
 
 
 #
@@ -139,8 +132,8 @@ def save_output(output_directory, sequence):
 #
 def create_marker(output_directory):
     """Create Marker"""
-    with open(f"{output_directory}/_SUCCESS", "w", encoding="utf-8") as f:
-        f.write("")
+    with open(f'{output_directory}/_SUCCESS', 'w', encoding='utf-8') as f:
+        f.write('')
 
 
 #
@@ -155,15 +148,10 @@ def run_job(input_directory, output_directory):
     sequence = reducer(sequence)
     create_ouptput_directory(output_directory)
     save_output(output_directory, sequence)
-    create_maker(output_directory)
-
-    from pprint import pprint
-    pprint(sequence)
-
-
+    create_marker(output_directory)
 
 if __name__ == "__main__":
     run_job(
-        "input",
-        "output",
+        "files/input",
+        "files/output",
     )
