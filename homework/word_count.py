@@ -7,6 +7,8 @@ import glob
 import os.path
 from itertools import groupby
 
+import string
+
 
 #
 # Escriba la función load_input que recive como parámetro un folder y retorna
@@ -25,6 +27,12 @@ from itertools import groupby
 #
 def load_input(input_directory):
     """Funcion load_input"""
+    sequence = []
+    files = glob.glob(f"{input_directory}/*")
+    with fileinput.input(files=files) as f:
+        for line in f:
+            sequence.append((fileinput.filename(), line))
+    return sequence
 
 
 #
@@ -34,7 +42,11 @@ def load_input(input_directory):
 #
 def line_preprocessing(sequence):
     """Line Preprocessing"""
-
+    sequence = [
+        (key, value.translate(str.maketrans("", "", string.punctuation)).lower().strip())
+        for key, value in sequence
+    ]
+    return sequence
 
 #
 # Escriba una función llamada maper que recibe una lista de tuplas de la
@@ -50,6 +62,14 @@ def line_preprocessing(sequence):
 #
 def mapper(sequence):
     """Mapper"""
+    # result = []
+    # for _, value in sequence:
+    #     for word in value.split():
+    #         result.append( (word, 1) )  
+    # return result
+    return [(word, 1) for _, value in sequence for word in value.split()]
+
+
 
 
 #
@@ -110,6 +130,12 @@ def create_marker(output_directory):
 #
 def run_job(input_directory, output_directory):
     """Job"""
+    sequence = load_input(input_directory)
+    sequence = line_preproccesing(sequence)
+    sequence = mapper(sequence)
+
+    from pprint import pprint
+    pprint(sequence)
 
 
 if __name__ == "__main__":
